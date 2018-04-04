@@ -23,6 +23,41 @@ const ParserErrors = error {
     MissingToken,
 };
 
+pub fn printTree(key: &const Key)void {
+    switch (*key) {
+        Key.Null => warn("Null\n"),
+        Key.Int => warn("Int: {}\n", key.Int),
+        Key.Map => {
+            warn("Map {}: {{\n", key.Map.size);
+            var it = key.Map.iterator();
+            while (true) {
+                var entry = it.next();
+                if (entry) |value| {
+                    warn("Key: {}, ", value.key);
+                    printKey(&value.value);
+                } else {
+                    break;
+                }
+            }
+            warn("}}\n");
+        },
+        Key.Array => {
+            warn("Array: [\n");
+            for (key.Array.items) |entry, i| {
+                if (i >= key.Array.len) break;
+                printKey(entry);
+            }
+            warn("]\n");
+        },
+        Key.Float => warn("Float: {}\n", key.Float),
+        Key.Bool => warn("Bool: {}\n", key.Bool),
+        Key.String => warn("String: {}\n", key.String),
+        else => {
+            warn("Invalid type\n");
+        },
+    }
+}
+
 const KeyMap = map([]u8, Key, util.hash_string, util.eql_string);
 const KeyArray = Vec(Key);
 
