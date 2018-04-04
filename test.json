@@ -1,0 +1,9 @@
+{
+    "X": true, "Y": false,
+    "Z": [ 1, -2, -3, 4.0, -9.8, -2e9 ],
+    "K": {
+        "WHY": 1
+    },
+    "null": null
+}
+// Test comment
